@@ -122,8 +122,11 @@ function getCountDaysInMonth(month, year) {
  * '2024-02-01T00:00:00.000Z', '2024-02-02T00:00:00.000Z'  => 2
  * '2024-02-01T00:00:00.000Z', '2024-02-12T00:00:00.000Z'  => 12
  */
-function getCountDaysOnPeriod(/* dateStart, dateEnd */) {
-  throw new Error('Not implemented');
+function getCountDaysOnPeriod(dateStart, dateEnd) {
+  const start = new Date(dateStart);
+  const end = new Date(dateEnd);
+  const difference = end.getTime() - start.getTime();
+  return Math.ceil(difference / (1000 * 3600 * 24)) + 1;
 }
 
 /**
@@ -162,8 +165,14 @@ function isDateInPeriod(date, period) {
  * '1999-01-05T02:20:00.000Z' => '1/5/1999, 2:20:00 AM'
  * '2010-12-15T22:59:00.000Z' => '12/15/2010, 10:59:00 PM'
  */
-function formatDate(/* date */) {
-  throw new Error('Not implemented');
+function formatDate(date) {
+  const dateObj = new Date(date);
+  const hours = dateObj.getUTCHours();
+  const currentHours = hours > 12 ? hours - 12 : hours;
+  const minutes = String(dateObj.getUTCMinutes()).padStart(2, 0);
+  const seconds = String(dateObj.getUTCSeconds()).padStart(2, 0);
+  const dayPart = hours >= 12 ? 'PM' : 'AM';
+  return `${dateObj.getUTCMonth() + 1}/${dateObj.getUTCDate()}/${dateObj.getUTCFullYear()}, ${currentHours}:${minutes}:${seconds} ${dayPart}`;
 }
 
 /**
